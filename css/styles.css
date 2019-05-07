@@ -1,0 +1,35 @@
+#text-area {
+  resize: none;
+}
+
+.visuallyhidden {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+  right: 100%;
+}
+
+.display-container {
+
+  border: solid 1px black;
+  position: relative;
+}
+
+.live-display {
+  width: 100%;
+  height: 100%;
+  min-height: 100px;
+  border: solid 1px black;
+}
+
+.display-container .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+#text-area:focus ~ .live-display{
+  border: solid 3px blue;
+}
