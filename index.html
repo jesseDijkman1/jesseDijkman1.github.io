@@ -11,21 +11,21 @@
   <section class="text-editor">
     <form class="editor-options">
       <section class="inserting">
-        <button type="button" class="line">Line</button>
+        <button type="button" class="line" data-el="hr">Line</button>
         <button type="button" class="image">Image</button>
       </section>
       <section class="headings">
-        <button type="button" class="h-1">H1</button>
-        <button type="button" class="h-2">H2</button>
-        <button type="button" class="h-3">H3</button>
-        <button type="button" class="h-4">H4</button>
-        <button type="button" class="h-5">H5</button>
-        <button type="button" class="h-6">H6</button>
+        <button type="button" class="h1" data-el="h1">H1</button>
+        <button type="button" class="h2" data-el="h2">H2</button>
+        <button type="button" class="h3" data-el="h3">H3</button>
+        <button type="button" class="h4" data-el="h4">H4</button>
+        <button type="button" class="h5" data-el="h5">H5</button>
+        <button type="button" class="h6" data-el="h6">H6</button>
       </section>
       <section class="char-styling">
-        <button type="button" class="bold">Bold</button>
-        <button type="button" class="italics">Italics</button>
-        <button type="button" class="underline">Underline</button>
+        <button type="button" class="bold" data-el="b">Bold</button>
+        <button type="button" class="italics" data-el="i">Italics</button>
+        <button type="button" class="underline" data-el="u">Underline</button>
       </section>
       <section class="text-layout">
         <button type="button" class="align left">Align Left</button>
@@ -35,7 +35,7 @@
       </section>
     </form>
     <form class="editor-textinput">
-      <textarea id="text-area" class="visuallyhidden" name="name" rows="8" cols="80"></textarea>
+      <textarea id="text-area" class="visuallyhidden" data-el="" name="name" rows="8" cols="80"></textarea>
       <section class="live-display"></section>
 
     </form>

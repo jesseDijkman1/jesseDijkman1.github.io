@@ -33,3 +33,7 @@
 #text-area:focus ~ .live-display{
   border: solid 3px blue;
 }
+
+button.isActive {
+  background: red;
+}
