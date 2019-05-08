@@ -1,6 +1,9 @@
 const textEditorRaw = document.querySelector(".editor-section.editor textarea");
 const newElementBtn = document.getElementsByClassName("insert-newEl");
 const newStyleBtn = document.getElementsByClassName("insert-newStyle");
+const prevTab = document.getElementById("preview-tab");
+
+
 
 (() => {
   for (let i = 0; i < newStyleBtn.length; i++) {
@@ -10,6 +13,8 @@ const newStyleBtn = document.getElementsByClassName("insert-newStyle");
   for (let i = 0; i < newElementBtn.length; i++) {
     newElementBtn[i].addEventListener("click", e => addToText(e, false))
   }
+
+prevTab.addEventListener("change", () => parseToMarkDown(textEditorRaw.value))
 })()
 
 
@@ -38,21 +43,45 @@ function addToText(e, double) {
     textEditorRaw.selectionEnd = selEnd - vLength;
   } else if (singleLine) {
     if (!new RegExp(".").test(textEditorRaw.value.charAt(textEditorRaw.selectionStart - 1))) {
-      document.execCommand("insertText", false, v)
+      document.execCommand("insertText", false, `${v} ${preserved}`)
     } else {
-      document.execCommand("insertText", false, `\n${v}`)
-    }
-
-    if (!new RegExp(".").test(textEditorRaw.value.charAt(textEditorRaw.selectionStart + 1))) {
-      document.execCommand("insertText", false, v)
-    } else {
-      document.execCommand("insertText", false, `${v}\n`)
+      document.execCommand("insertText", false, `\n${v} `)
     }
   } else {
-    document.execCommand("insertText", false, `${v}${preserved}`)
+    document.execCommand("insertText", false, `${v} ${preserved}`) // Space is required
   }
 }
 
+function parseToMarkDown(text) {
+  let save = text;
+
+  const headingsRx = /^(#{1,6})\s(.+)$/gm;
+  const boldItalicsRx = /(\*+)([\w\d\s\\\*][^\n]+?)\1/g;
+  const line = /^-{3}$/gm;
+
+  // Replace all the headings
+  save = save.replace(headingsRx, (...g) => `<h${g[1].length}>${g[2]}</h${g[1].length}>`);
+
+  // Create bold and italics
+  save = save.replace(boldItalicsRx, (...g) => {
+    switch (g[1].length) {
+      case 1:
+        return `<em>${g[2]}</em>`
+        break;
+      case 2:
+        return `<strong>${g[2]}</strong>`
+        break;
+      case 3:
+        return `<strong><em>${g[2]}</em></strong>`
+        break;
+    }
+  })
+
+
+  console.log(save)
+  // console.log(save)
+
+}
 
 // const textEditor = document.querySelector(".editor-textinput");
 // const editorOptions = document.querySelectorAll(".editor-options [data-el]");

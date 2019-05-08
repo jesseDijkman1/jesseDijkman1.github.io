@@ -24,3 +24,11 @@ textarea {
 #editor-tab:checked ~ .editor-section.editor {
   display: block;
 }
+
+#preview-tab:checked ~ header [for="preview-tab"] {
+  color: red;
+}
+
+#editor-tab:checked ~ header [for="editor-tab"] {
+  color: red;
+}
