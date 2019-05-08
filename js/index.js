@@ -20,6 +20,7 @@ function addToText(e, double) {
 
 
   const v = e.currentTarget.getAttribute("data-editValue");
+  const singleLine = e.currentTarget.getAttribute("data-singleLine") == undefined ? false : true;
   const vLength = v.length;
 
   if (selEnd > selStart) {
@@ -33,14 +34,26 @@ function addToText(e, double) {
     selStart = textEditorRaw.selectionStart;
     selEnd = textEditorRaw.selectionEnd;
 
-
     textEditorRaw.selectionStart = selStart - vLength;
     textEditorRaw.selectionEnd = selEnd - vLength;
+  } else if (singleLine) {
+    if (!new RegExp(".").test(textEditorRaw.value.charAt(textEditorRaw.selectionStart - 1))) {
+      document.execCommand("insertText", false, v)
+    } else {
+      document.execCommand("insertText", false, `\n${v}`)
+    }
+
+    if (!new RegExp(".").test(textEditorRaw.value.charAt(textEditorRaw.selectionStart + 1))) {
+      document.execCommand("insertText", false, v)
+    } else {
+      document.execCommand("insertText", false, `${v}\n`)
+    }
+  } else {
+    document.execCommand("insertText", false, `${v}${preserved}`)
   }
-
-
-  console.log(selStart, selEnd)
 }
+
+
 // const textEditor = document.querySelector(".editor-textinput");
 // const editorOptions = document.querySelectorAll(".editor-options [data-el]");
 
