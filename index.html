@@ -11,31 +11,31 @@
   <section class="text-editor">
     <form class="editor-options">
       <section class="inserting">
-        <button type="button" class="line" data-el="hr">Line</button>
-        <button type="button" class="image">Image</button>
+        <button type="button" class="insert-newEl" data-editValue="hr">Line</button>
+        <!-- <button type="button" class="insert-newEl">Image</button> -->
       </section>
       <section class="headings">
-        <button type="button" class="h1" data-el="h1">H1</button>
-        <button type="button" class="h2" data-el="h2">H2</button>
-        <button type="button" class="h3" data-el="h3">H3</button>
-        <button type="button" class="h4" data-el="h4">H4</button>
-        <button type="button" class="h5" data-el="h5">H5</button>
-        <button type="button" class="h6" data-el="h6">H6</button>
+        <button type="button" class="insert-newEl" data-editValue="h1">H1</button>
+        <button type="button" class="insert-newEl" data-editValue="h2">H2</button>
+        <button type="button" class="insert-newEl" data-editValue="h3">H3</button>
+        <button type="button" class="insert-newEl" data-editValue="h4">H4</button>
+        <button type="button" class="insert-newEl" data-editValue="h5">H5</button>
+        <button type="button" class="insert-newEl" data-editValue="h6">H6</button>
       </section>
       <section class="char-styling">
-        <button type="button" class="bold" data-el="b">Bold</button>
-        <button type="button" class="italics" data-el="i">Italics</button>
-        <button type="button" class="underline" data-el="u">Underline</button>
+        <button type="button" class="insert-newStyle" data-editValue="bold">Bold</button>
+        <button type="button" class="insert-newStyle" data-editValue="italic">Italics</button>
+        <button type="button" class="insert-newStyle" data-editValue="underline">Underline</button>
       </section>
       <section class="text-layout">
-        <button type="button" class="align left">Align Left</button>
-        <button type="button" class="align right">Align Right</button>
-        <button type="button" class="align center">Align Center</button>
-        <button type="button" class="align justify">Align Justify</button>
+        <button type="button" class="apply-alignment" data-editValue="justifyLeft">Align Left</button>
+        <button type="button" class="apply-alignment" data-editValue="justifyRight">Align Right</button>
+        <button type="button" class="apply-alignment" data-editValue="justifyCenter">Align Center</button>
+        <button type="button" class="apply-alignment" data-editValue="justifyFulls">Align Justify</button>
       </section>
     </form>
-    <section class="editor-textinput" contenteditable="true">
-      <p>... Enter text</p>
+    <section class="editor-textinput isEmpty" contenteditable="true">
+      <p></p>
     </section>
   </section>
 

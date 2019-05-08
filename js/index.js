@@ -1,145 +1,88 @@
 const textEditor = document.querySelector(".editor-textinput");
+const editorOptions = document.querySelectorAll(".editor-options [data-el]");
+const newElementBtn = document.getElementsByClassName("insert-newEl");
+const newStyleBtn = document.getElementsByClassName("insert-newStyle");
+const applyAlignBtn = document.getElementsByClassName("apply-alignment");
 
-textEditor.addEventListener("keydown", editorNavigator);
+class Editor {
+  constructor(editor, options) {
+    this.editor = editor;
+    this.options = options;
+    this.isEmpty = true;
 
-let isEmpty;
+    // Event Listeners
+    this.editor.addEventListener("keydown", this.editorNavigator.bind(this))
 
-function editorNavigator(e) {
-  const current = e.currentTarget;
+    for (let opt in options) {
+      const option = options[opt];
 
+      for (let i = 0; i < option.length; i++) {
+        switch (opt) {
+          case "element":
+            option[i].addEventListener("click", this.insertElement.bind(this))
+            break;
+          case "style":
+            option[i].addEventListener("click", this.applyStyle.bind(this))
+            break;
+          case "align":
+            option[i].addEventListener("click", this.applyAlign.bind(this))
+            break;
+        }
+      }
+    }
 
-  if (e.keyCode == 8 && isEmpty) {
-    e.preventDefault()
+    // Auto Focus
+    setTimeout(() => this.editor.focus(), 0)
   }
 
-  setTimeout(() => {
-    if (current.children.length == 1) {
-      if (current.firstElementChild.textContent.length == 0) {
-        current.classList.add("isEmpty")
-        isEmpty = true;
-      } else {
-        current.classList.remove("isEmpty")
-        isEmpty = false;
-      }
-    } else {
-      current.classList.remove("isEmpty")
-      isEmpty = false;
+  insertElement(e) {
+    const v = e.currentTarget.getAttribute("data-editValue");
+    const headingRx = /h\d/;
+
+    if (headingRx.test(v)) {
+      document.execCommand("formatBlock", false, `<${v}>`)
+      document.execCommand("insertBrOnReturn", true, null)
     }
-  }, 0)
 
+    if (v === "hr") {
+      document.execCommand("insertHorizontalRule", true, null)
+    }
+  }
 
+  applyStyle(e) {
+    const v = e.currentTarget.dataset["editValue"]
+  }
+
+  applyAlign(e) {
+    const v = e.currentTarget.dataset["editValue"]
+  }
+
+  editorNavigator(e) {
+    if ((e.keyCode == 8 && this.isEmpty) || (e.keyCode == 13 && this.isEmpty)) {
+      e.preventDefault()
+    }
+
+    setTimeout(() => {
+
+      if (this.editor.children.length == 1) {
+        if (this.editor.firstElementChild.textContent.length == 0) {
+          this.editor.classList.add("isEmpty")
+          this.isEmpty = true;
+        } else {
+
+          this.editor.classList.remove("isEmpty")
+          this.isEmpty = false;
+        }
+      } else {
+        this.editor.classList.remove("isEmpty")
+        this.isEmpty = false;
+      }
+    }, 0)
+  }
 }
 
-
-// const textArea = document.getElementById("text-area");
-// const textDisplay = document.querySelector(".editor-textinput .live-display");
-// const editorButtons = document.querySelectorAll(".editor-options section button");
-
-// (() => {
-//   for (let i = 0; i < editorButtons.length; i++) {
-//     editorButtons[i].addEventListener("click", findSelection)
-//   }
-//
-//   textDisplay.addEventListener("click", caretPositioner)
-//
-//   textArea.addEventListener("keydown", keyHandler);
-//   textArea.addEventListener("keypress", keyHandler);
-//   // textArea.addEventListener("keyup", keyHandler);
-// })()
-//
-//
-// function selectionUpdater(event, txt) {
-//   const dataEl = event.target.dataset["el"];
-//
-//   if (dataEl) {
-//     const el = document.createElement(dataEl);
-//     el.appendChild(document.createTextNode(`${txt}`))
-//
-//     return el
-//   }
-// }
-//
-// function findSelection(e) {
-//   const classes = e.target.className.split(" ");
-//   const selection = window.getSelection()
-//   const txt = selection.toString()
-//
-//   if (!txt.length) {
-//     e.target.classList.toggle("isActive");
-//
-//     const dataEl = e.target.getAttribute("data-el");
-//   } else {
-//     const range = selection.getRangeAt(0);
-//     const newEl = selectionUpdater(e, txt)
-//
-//     range.deleteContents();
-//     range.insertNode(newEl);
-//   }
-//
-//
-//
-//   updateAreaTxt()
-// }
-//
-// function focusHandler() {
-//   textDisplay.addEventListener("mouseup", e => {
-//     const selection = window.getSelection()
-//
-//     if (selection.toString().length) {
-//       // Some text is selected
-//     } else {
-//       textArea.focus()
-//     }
-//   })
-// }
-//
-// focusHandler()
-//
-// function caretPositioner(e) {
-//   // if (e.target !== textDisplay) {
-//   //   const target.nodeName)
-//   // }
-//
-//   let range;
-//   let textNode;
-//   let offset;
-//
-//   if (document.caretPositionFromPoint) {
-//
-//     range = document.caretPositionFromPoint(e.clientX, e.clientY);
-//     textNode = range.offsetNode;
-//     offset = range.offset;
-//   } else if (document.caretRangeFromPoint) {
-//     range = document.caretRangeFromPoint(e.clientX, e.clientY);
-//     textNode = range.startContainer;
-//     offset = range.startOffset;
-//   }
-//   console.log(offset)
-//
-//   textArea.selectionStart = offset;
-//   textArea.selectionEnd = offset;
-// }
-//
-//
-// function keyHandler(e) {
-//
-//   setTimeout(() => {
-//
-//     if (e.keyCode == 13)   {
-//       textArea.value = textArea.value.replace(/\n/, "<br>")
-//     }
-//
-//     updateDisplay(textArea.value)
-//     // caretPositioner()
-//   }, 0)
-// }
-//
-// function updateDisplay() {
-//   textDisplay.innerHTML = textArea.value
-// }
-//
-// function updateAreaTxt() {
-//   textArea.value = textDisplay.innerHTML;
-//
-//   setTimeout(updateDisplay(textArea.value), 0)
-// }
+new Editor(textEditor, {
+  element: newElementBtn,
+  style: newStyleBtn,
+  align: applyAlignBtn
+})
