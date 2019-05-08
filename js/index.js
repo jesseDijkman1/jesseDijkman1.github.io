@@ -41,7 +41,12 @@ class Editor {
 
     if (headingRx.test(v)) {
       document.execCommand("formatBlock", false, `<${v}>`)
-      document.execCommand("insertBrOnReturn", true, null)
+      document.execCommand("insertText", true, "\n")
+
+      setTimeout(() => document.execCommand("forwardDelete", true, null),0)
+
+      // document.execCommand("insertParagraph", true, null)
+      // Maybe add code that checks if the button was pressed before text was added
     }
 
     if (v === "hr") {
@@ -63,17 +68,23 @@ class Editor {
     }
 
     setTimeout(() => {
+      console.log(this.editor.children)
 
       if (this.editor.children.length == 1) {
-        if (this.editor.firstElementChild.textContent.length == 0) {
+        if (this.editor.firstElementChild.textContent.length == 0 || !this.editor.firstElementChild.textContent) {
           this.editor.classList.add("isEmpty")
           this.isEmpty = true;
         } else {
-
           this.editor.classList.remove("isEmpty")
           this.isEmpty = false;
         }
       } else {
+        console.log("two children")
+        if (this.editor.firstElementChild.nodeName == "HR") {
+          this.editor.classList.remove("isEmpty")
+          this.isEmpty = false;
+        }
+
         this.editor.classList.remove("isEmpty")
         this.isEmpty = false;
       }
