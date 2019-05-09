@@ -59,7 +59,8 @@ function parseToMarkDown(text) {
   const headingsRx = /^(#{1,6})\s(.+)$/gm;
   const boldItalicsRx = /(\*+)([\w\d\s\\\*][^\n]+?)\1/g;
   const linesRx = /^-{3}$/gm;
-  const codeRx = /(```)\w*\n?([\w\d\n\s\t\r\D]+)\1/g;
+  // const codeRx = /(```)\w*\n?([\w\d\n\s\t\r\D]+)\1/g;\
+  const codeRx = /(?:`{3}\w*\n?([\w\d\s\t\r\D]+)`{3}|`{1}(.+)`{1})/g
   const linksRx = /\[(.+)\]\((.+)\)/;
   const globalListItemRx = /^(\s*[^\n])?\-\s{1}(.+)/gm
 
@@ -85,17 +86,64 @@ function parseToMarkDown(text) {
     if (reRun == true) {
       return liJoiner(storage);
     } else {
-      console.log(storage)
       return storage.join("\n")
     }
-
   }
-   save = liJoiner(save)
-   console.log(save)
 
+  save = liJoiner(save)
+
+  function paragrapher(data) {
+    let storage = (typeof data === "object" ? data : data.split(pSepRx));
+    const paraRx = /^[\w].+$/m;
+    let reRun = false;
+
+    storage.forEach((d, i, all) => {
+      if (i > 0) {
+        if ((paraRx.test(all[i - 1]) && paraRx.test(d)) || (boldItalicsRx.test(all[i - 1]) && paraRx.test(d))) {
+          if (d.length) {
+            all[i - 1] += ` ${d}`;
+            all.splice(i, 1);
+
+            reRun = true;
+          }
+        }
+      }
+    })
+
+    if (reRun == true) {
+      return paragrapher(storage);
+    } else {
+
+      storage = storage.map((s, i, all) => {
+        if (i > 0 && i < all.length - 1) {
+          if ((/^(\*|\w).+/m).test(s)) {
+            if (!all[i - 1].length || headingsRx.test(all[i - 1])) {
+              if (!(/^(\*+).+\1$/m).test(s)) {
+                return `<p>${s}</p>`
+              }
+            }
+          }
+        }
+        return s
+      })
+
+      return storage.join("\n")
+    }
+  }
+
+  save = paragrapher(save)
 
   // Create code blocks
-  save = save.replace(codeRx, (...g) => `<pre><code>${g[2]}</code></pre>`)
+  save = save.replace(codeRx, (...g) => {
+    if (g[2]) {
+      return `<pre style="display: inline-block"><code>${g[2]}</code></pre>`
+    }
+
+    if (g[1]) {
+      return `<pre><code>${g[1]}</code></pre>`
+    }
+
+  })
 
   // Replace all the headings
   save = save.replace(headingsRx, (...g) => `<h${g[1].length}>${g[2]}</h${g[1].length}>`);
@@ -189,6 +237,6 @@ function parseToMarkDown(text) {
 
   textEditorPreview.innerHTML = save;
 
-  // console.log(textEditorPreview.innerHTML)
+  console.log(textEditorPreview.innerHTML)
   // console.log(save)
 }

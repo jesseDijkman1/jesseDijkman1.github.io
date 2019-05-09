@@ -2,7 +2,7 @@
 
 ## How it will work
 - When pressing enter a new p element must be created
-  - Create empty line when there's no text
+  - Create empty line ```when``` there's no text
 - You can edit by selecting and then clicking a butto
 
 **First list**
@@ -17,3 +17,13 @@
     - Line 3.1.1
     - Line 3.1.2
   - Line 3.2
+
+```js
+const foo = "1";
+
+function bar(p) {
+  return p + p;
+}
+
+bar(foo)
+```
