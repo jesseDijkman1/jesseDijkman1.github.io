@@ -1,4 +1,5 @@
 const textEditorRaw = document.querySelector(".editor-section.editor textarea");
+const textEditorPreview = document.querySelector(".editor-section.preview");
 const newElementBtn = document.getElementsByClassName("insert-newEl");
 const newStyleBtn = document.getElementsByClassName("insert-newStyle");
 const prevTab = document.getElementById("preview-tab");
@@ -54,19 +55,53 @@ function addToText(e, double) {
 
 function parseToMarkDown(text) {
   let save = text;
-
+  const pSepRx = /\n/g
   const headingsRx = /^(#{1,6})\s(.+)$/gm;
   const boldItalicsRx = /(\*+)([\w\d\s\\\*][^\n]+?)\1/g;
   const linesRx = /^-{3}$/gm;
   const codeRx = /(```)\w*\n?([\w\d\n\s\t\r\D]+)\1/g;
   const linksRx = /\[(.+)\]\((.+)\)/;
-  // const globalListItemRx = /^(\s[^\n])*\-\s{1}(.+)/gm;
   const globalListItemRx = /^(\s*[^\n])?\-\s{1}(.+)/gm
+
+  // Create paragraphs
+  function liJoiner(data) {
+    let storage = (typeof data === "object" ? data : data.split(pSepRx))
+    let liRx = /^(\s*[^\n])?\-\s{1}(.+)/m;
+    let reRun = false;
+
+    storage.forEach((d, i, all) => {
+      if (i > 0) {
+        if (liRx.test(all[i - 1]) && !liRx.test(d)) {
+          if (d.length) {
+            all[i - 1] += ` ${d}`;
+            all.splice(i, 1);
+
+            reRun = true;
+          }
+        }
+      }
+    })
+
+    if (reRun == true) {
+      return liJoiner(storage);
+    } else {
+      console.log(storage)
+      return storage.join("\n")
+    }
+
+  }
+   save = liJoiner(save)
+   console.log(save)
+
+
   // Create code blocks
   save = save.replace(codeRx, (...g) => `<pre><code>${g[2]}</code></pre>`)
 
   // Replace all the headings
   save = save.replace(headingsRx, (...g) => `<h${g[1].length}>${g[2]}</h${g[1].length}>`);
+
+  // Create lines
+  save = save.replace(linesRx, () => "<hr>")
 
   // Create bold and italics
   save = save.replace(boldItalicsRx, (...g) => {
@@ -83,20 +118,16 @@ function parseToMarkDown(text) {
     }
   })
 
-  // Create lines
-  save = save.replace(linesRx, () => "<hr>")
-
   // Create links
   save = save.replace(linksRx, (...g) => `<a href="${g[2]}">${g[1]}</a>`)
 
   function createLists() {
     let i = 0;
-    let l = [...save.matchAll(globalListItemRx)];
-    let temp;
+    let temp = [...save.matchAll(globalListItemRx)];
 
     function tracker() {
       let c = 0;
-      temp = l.map((a) => {
+      temp = temp.map((a) => {
         a["newSubUl"] = ""
         a["endSubUl"] = ""
         a["closeUl"] = ""
@@ -144,18 +175,20 @@ function parseToMarkDown(text) {
     tracker()
 
     save = save.replace(globalListItemRx, (...g) => {
-      // let el = `${temp[i].newUl ? temp[i].newUl : ""}${temp[i].newSubUl ? temp[i].newSubUl : ""}<li>${g[2]}</li>${temp[i].endSubUl ? temp[i].endSubUl : ""}${temp[i].closeUl ? temp[i].closeUl : ""}`
-
       let el = `${temp[i].newUl}${temp[i].newSubUl}<li>${g[2]}</li>${temp[i].endSubUl}${temp[i].closeUl}`
+
       i++
 
       return el
-
     })
-    console.log(save)
   }
 
   createLists()
 
 
+
+  textEditorPreview.innerHTML = save;
+
+  // console.log(textEditorPreview.innerHTML)
+  // console.log(save)
 }
