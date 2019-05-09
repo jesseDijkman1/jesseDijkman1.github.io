@@ -57,7 +57,13 @@ function parseToMarkDown(text) {
 
   const headingsRx = /^(#{1,6})\s(.+)$/gm;
   const boldItalicsRx = /(\*+)([\w\d\s\\\*][^\n]+?)\1/g;
-  const line = /^-{3}$/gm;
+  const linesRx = /^-{3}$/gm;
+  const codeRx = /(```)\w*\n?([\w\d\n\s\t\r\D]+)\1/g;
+  const linksRx = /\[(.+)\]\((.+)\)/;
+  // const globalListItemRx = /^(\s[^\n])*\-\s{1}(.+)/gm;
+  const globalListItemRx = /^(\s*[^\n])?\-\s{1}(.+)/gm
+  // Create code blocks
+  save = save.replace(codeRx, (...g) => `<pre><code>${g[2]}</code></pre>`)
 
   // Replace all the headings
   save = save.replace(headingsRx, (...g) => `<h${g[1].length}>${g[2]}</h${g[1].length}>`);
@@ -77,107 +83,79 @@ function parseToMarkDown(text) {
     }
   })
 
+  // Create lines
+  save = save.replace(linesRx, () => "<hr>")
 
-  console.log(save)
-  // console.log(save)
+  // Create links
+  save = save.replace(linksRx, (...g) => `<a href="${g[2]}">${g[1]}</a>`)
+
+  function createLists() {
+    let i = 0;
+    let l = [...save.matchAll(globalListItemRx)];
+    let temp;
+
+    function tracker() {
+      let c = 0;
+      temp = l.map((a) => {
+        a["newSubUl"] = ""
+        a["endSubUl"] = ""
+        a["closeUl"] = ""
+        a["newUl"] = ""
+
+        a["depth"] = a[1] ? a[1].split("").length / 2: 0
+        return a
+      })
+
+      temp = temp.map((a, b, all) => {
+        if (b > 0) {
+          let prevDepth = all[b - 1].depth;
+          let thisDepth = a.depth;
+
+          if (thisDepth > prevDepth) {
+            a["newSubUl"] = "<li>\n<ul>\n"
+          } else if (thisDepth < prevDepth) {
+            all[b - 1]["endSubUl"] = "\n</ul>\n</li>"
+          }
+        }
+
+        if (c + 1 !== a.index) {
+          // New Big Ul
+          if (all[b - 1]) {
+          // If there is a previous one close that
+            all[b - 1]["closeUl"] = "\n</ul>"
+          }
+
+          a["newUl"] = "<ul>\n"
+        } else if (b == all.length - 1) {
+          // End Item Reached
+          let end = "";
+
+          for (let e = 0; e < a.depth; e++) {
+            end += "\n</ul>\n</li>"
+          }
+
+          a["closeUl"] = `${end}\n</ul>`
+        }
+
+        c = a[0].length + a.index;
+        return a
+      })
+    }
+    tracker()
+
+    save = save.replace(globalListItemRx, (...g) => {
+      // let el = `${temp[i].newUl ? temp[i].newUl : ""}${temp[i].newSubUl ? temp[i].newSubUl : ""}<li>${g[2]}</li>${temp[i].endSubUl ? temp[i].endSubUl : ""}${temp[i].closeUl ? temp[i].closeUl : ""}`
+
+      let el = `${temp[i].newUl}${temp[i].newSubUl}<li>${g[2]}</li>${temp[i].endSubUl}${temp[i].closeUl}`
+      i++
+
+      return el
+
+    })
+    console.log(save)
+  }
+
+  createLists()
+
 
 }
-
-// const textEditor = document.querySelector(".editor-textinput");
-// const editorOptions = document.querySelectorAll(".editor-options [data-el]");
-
-// const applyAlignBtn = document.getElementsByClassName("apply-alignment");
-//
-// class Editor {
-//   constructor(editor, options) {
-//     this.editor = editor;
-//     this.options = options;
-//     this.isEmpty = true;
-//
-//     // Event Listeners
-//     this.editor.addEventListener("keydown", this.editorNavigator.bind(this))
-//
-//     for (let opt in options) {
-//       const option = options[opt];
-//
-//       for (let i = 0; i < option.length; i++) {
-//         switch (opt) {
-//           case "element":
-//             option[i].addEventListener("click", this.insertElement.bind(this))
-//             break;
-//           case "style":
-//             option[i].addEventListener("click", this.applyStyle.bind(this))
-//             break;
-//           case "align":
-//             option[i].addEventListener("click", this.applyAlign.bind(this))
-//             break;
-//         }
-//       }
-//     }
-//
-//     // Auto Focus
-//     setTimeout(() => this.editor.focus(), 0)
-//   }
-//
-//   insertElement(e) {
-//     const v = e.currentTarget.getAttribute("data-editValue");
-//     const headingRx = /h\d/;
-//
-//     if (headingRx.test(v)) {
-//       document.execCommand("formatBlock", false, `<${v}>`)
-//       document.execCommand("insertText", true, "\n")
-//
-//       setTimeout(() => document.execCommand("forwardDelete", true, null),0)
-//
-//       // document.execCommand("insertParagraph", true, null)
-//       // Maybe add code that checks if the button was pressed before text was added
-//     }
-//
-//     if (v === "hr") {
-//       document.execCommand("insertHorizontalRule", true, null)
-//     }
-//   }
-//
-//   applyStyle(e) {
-//     const v = e.currentTarget.dataset["editValue"]
-//   }
-//
-//   applyAlign(e) {
-//     const v = e.currentTarget.dataset["editValue"]
-//   }
-//
-//   editorNavigator(e) {
-//     if ((e.keyCode == 8 && this.isEmpty) || (e.keyCode == 13 && this.isEmpty)) {
-//       e.preventDefault()
-//     }
-//
-//     setTimeout(() => {
-//       console.log(this.editor.children)
-//
-//       if (this.editor.children.length == 1) {
-//         if (this.editor.firstElementChild.textContent.length == 0 || !this.editor.firstElementChild.textContent) {
-//           this.editor.classList.add("isEmpty")
-//           this.isEmpty = true;
-//         } else {
-//           this.editor.classList.remove("isEmpty")
-//           this.isEmpty = false;
-//         }
-//       } else {
-//         console.log("two children")
-//         if (this.editor.firstElementChild.nodeName == "HR") {
-//           this.editor.classList.remove("isEmpty")
-//           this.isEmpty = false;
-//         }
-//
-//         this.editor.classList.remove("isEmpty")
-//         this.isEmpty = false;
-//       }
-//     }, 0)
-//   }
-// }
-//
-// new Editor(textEditor, {
-//   element: newElementBtn,
-//   style: newStyleBtn,
-//   align: applyAlignBtn
-// })
