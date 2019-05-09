@@ -56,13 +56,14 @@ function addToText(e, double) {
 function parseToMarkDown(text) {
   let save = text;
   const pSepRx = /\n/g
-  const headingsRx = /^(#{1,6})\s(.+)$/gm;
+  // const headingsRx = /^(#{1,6})\s(.+)$/gm;
+  const headingsRx = /^(\s*\-{1}\s*)?(#{1,6})\s(.+)$/gm
   const boldItalicsRx = /(\*+)([\w\d\s\\\*][^\n]+?)\1/g;
   const linesRx = /^-{3}$/gm;
-  // const codeRx = /(```)\w*\n?([\w\d\n\s\t\r\D]+)\1/g;\
   const codeRx = /(?:`{3}\w*\n?([\w\d\s\t\r\D]+)`{3}|`{1}(.+)`{1})/g
   const linksRx = /\[(.+)\]\((.+)\)/;
-  const globalListItemRx = /^(\s*[^\n])?\-\s{1}(.+)/gm
+  // const globalListItemRx = /^(\s*[^\n])?\-\s{1}(.+)/gm
+  const globalListItemRx = /^(\s*[^\n])?(\-|\d\.)\s{1}(.+)/gm
 
   // Create paragraphs
   function liJoiner(data) {
@@ -136,17 +137,20 @@ function parseToMarkDown(text) {
   // Create code blocks
   save = save.replace(codeRx, (...g) => {
     if (g[2]) {
-      return `<pre style="display: inline-block"><code>${g[2]}</code></pre>`
+      return `<pre class="code-inline"><code>${g[2]}</code></pre>`
     }
 
     if (g[1]) {
-      return `<pre><code>${g[1]}</code></pre>`
+      return `<pre class="code-block"><code>${g[1]}</code></pre>`
     }
 
   })
 
   // Replace all the headings
-  save = save.replace(headingsRx, (...g) => `<h${g[1].length}>${g[2]}</h${g[1].length}>`);
+  save = save.replace(headingsRx, (...g) => {
+    console.log(g)
+    return `${g[1] || ""}<h${g[2].length}>${g[3]}</h${g[2].length}>`
+  });
 
   // Create lines
   save = save.replace(linesRx, () => "<hr>")
@@ -171,7 +175,20 @@ function parseToMarkDown(text) {
 
   function createLists() {
     let i = 0;
+
     let temp = [...save.matchAll(globalListItemRx)];
+
+    function listType(str) {
+      const ol = /\d/;
+      const ul = /\-/;
+      console.log(str, ul.test(str))
+      if (ol.test(str)) {
+        return "ol"
+      }
+      if (ul.test(str)) {
+        return "ul"
+      }
+    }
 
     function tracker() {
       let c = 0;
@@ -186,14 +203,16 @@ function parseToMarkDown(text) {
       })
 
       temp = temp.map((a, b, all) => {
+        let lType = listType(a[2]);
+
         if (b > 0) {
           let prevDepth = all[b - 1].depth;
           let thisDepth = a.depth;
 
           if (thisDepth > prevDepth) {
-            a["newSubUl"] = "<li>\n<ul>\n"
+            a["newSubUl"] = `<li class='sub-list'>\n<${lType}>\n`
           } else if (thisDepth < prevDepth) {
-            all[b - 1]["endSubUl"] = "\n</ul>\n</li>"
+            all[b - 1]["endSubUl"] = `\n</${lType}>\n</li>`
           }
         }
 
@@ -201,19 +220,19 @@ function parseToMarkDown(text) {
           // New Big Ul
           if (all[b - 1]) {
           // If there is a previous one close that
-            all[b - 1]["closeUl"] = "\n</ul>"
+            all[b - 1]["closeUl"] = `\n</${lType}>`
           }
 
-          a["newUl"] = "<ul>\n"
+          a["newUl"] = `<${lType}>\n`
         } else if (b == all.length - 1) {
           // End Item Reached
           let end = "";
 
           for (let e = 0; e < a.depth; e++) {
-            end += "\n</ul>\n</li>"
+            end += `\n</${lType}>\n</li>`
           }
 
-          a["closeUl"] = `${end}\n</ul>`
+          a["closeUl"] = `${end}\n</${lType}>`
         }
 
         c = a[0].length + a.index;
@@ -223,7 +242,7 @@ function parseToMarkDown(text) {
     tracker()
 
     save = save.replace(globalListItemRx, (...g) => {
-      let el = `${temp[i].newUl}${temp[i].newSubUl}<li>${g[2]}</li>${temp[i].endSubUl}${temp[i].closeUl}`
+      let el = `${temp[i].newUl}${temp[i].newSubUl}<li>${g[3]}</li>${temp[i].endSubUl}${temp[i].closeUl}`
 
       i++
 

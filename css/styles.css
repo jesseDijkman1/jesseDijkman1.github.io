@@ -1,3 +1,13 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: system-ui;
+}
+
+
+
 textarea {
   resize: none;
   width:100%;
@@ -31,4 +41,76 @@ textarea {
 
 #editor-tab:checked ~ header [for="editor-tab"] {
   color: red;
+}
+
+.editor-section.preview {
+  color: #24292e;
+  padding: 0 5%;
+}
+
+.editor-section.preview ul {
+  padding-left: 2em;
+}
+
+.editor-section.preview a {
+  color: #0366d6;
+  text-decoration: none;
+}
+
+.editor-section.preview hr {
+  background-color: #e1e4e8;
+  border: 0;
+  height: .25em;
+  margin: 24px 0;
+  padding: 0;
+}
+
+
+.editor-section.preview h1 {
+  font-size: 2em;
+  border-bottom: 1px solid #eaecef;
+  padding-bottom: .3em;
+}
+
+.editor-section.preview h2 {
+  font-size: 1.5em;
+  border-bottom: 1px solid #eaecef;
+  padding-bottom: .3em;
+}
+.editor-section.preview h3 {
+  font-size: 1.25em;
+}
+.editor-section.preview h4 {
+  font-size: 1em;
+}
+
+.editor-section.preview h5 {
+  font-size: .875em;
+}
+
+.editor-section.preview h6 {
+  font-size: .85em;
+  color: #6a737d;
+  margin-top: 24px;
+  margin-bottom: 1rem;
+}
+
+.editor-section.preview strong {
+  font-weight: 600;
+}
+
+.code-block {
+  padding: 1em;
+  background: #f6f8fa;
+  border-radius: 3px;
+}
+.code-inline {
+  display: inline-block;
+  padding: .2em .4em;
+  background-color: rgba(27,31,35,.05);
+  border-radius: 3px;
+}
+
+.sub-list {
+  list-style-type: none;
 }
