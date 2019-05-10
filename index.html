@@ -18,30 +18,36 @@
         <label for="preview-tab">Preview</label>
         <label for="editor-tab">Editor</label>
       </header>
+
       <form class="editor-options">
-        <section class="options inserting">
+        <!-- <section class="options inserting"> -->
           <button type="button" class="insert-newEl" data-singleLine data-editValue="---">Line</button>
           <button type="button" class="insert-newEl" data-editValue="[TEXT](http://example.com/)">Link</button>
           <button type="button" class="insert-newEl" data-editValue="![TEXT](image link)">Img</button>
-          <button type="button" class="insert-newEl" data-editValue="| HEADING | HEADING |
+          <button type="button" class="insert-newEl" data-singleLine data-editValue="| HEADING | HEADING |
 | ------- | ------- |
 | CONTENT | CONTENT |">Table</button>
-          <button type="button" class="insert-newEl" data-editValue="> TEXT">Blockquote</button>
-        </section>
+          <button type="button" class="insert-newEl" data-singleLine data-editValue="> TEXT">Blockquote</button>
+          <button type="button" class="insert-newEl" data-editValue="`TEXT`">Code</button>
+          <button type="button" class="insert-newEl" data-singleLine data-editValue="```
+TEXT
+```">Code block</button>
 
-        <section class="options headings">
+        <!-- </section> -->
+
+        <!-- <section class="options headings"> -->
           <button type="button" class="insert-newEl" data-singleLine data-editValue="#">H1</button>
           <button type="button" class="insert-newEl" data-singleLine data-editValue="##">H2</button>
           <button type="button" class="insert-newEl" data-singleLine data-editValue="###">H3</button>
           <button type="button" class="insert-newEl" data-singleLine data-editValue="####">H4</button>
           <button type="button" class="insert-newEl" data-singleLine data-editValue="#####">H5</button>
           <button type="button" class="insert-newEl" data-singleLine data-editValue="######">H6</button>
-        </section>
-        <section class="options char-styling">
+        <!-- </section> -->
+        <!-- <section class="options char-styling"> -->
           <button type="button" class="insert-newStyle" data-editValue="**">Bold</button>
           <button type="button" class="insert-newStyle" data-editValue="*">Italics</button>
           <button type="button" class="insert-newStyle" data-editValue="__">Underline</button>
-        </section>
+        <!-- </section> -->
       </form>
 
 

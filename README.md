@@ -4,7 +4,7 @@ For this project I'm going to build a markdown texteditor. That allows users to 
 ## How it will work
 - When pressing enter a new p element must be created
   - Create empty line `when` there's no text
-- You can edit by selecting and then clicking a butto
+- You can edit by sel ecting and then clicking a butt
 
 **First list**
 - Line 1
@@ -20,6 +20,7 @@ For this project I'm going to build a markdown texteditor. That allows users to 
   - Line 3.2
 
 ```js
+
 const foo = "1";
 
 function bar(p) {
@@ -28,3 +29,8 @@ function bar(p) {
 
 bar(foo)
 ```
+
+![fawe](https://i.imgur.com/L3ypYJT.jpg)
+
+>  blockquote 1awefawef
+>blockquote 2

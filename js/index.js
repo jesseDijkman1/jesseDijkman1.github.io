@@ -62,26 +62,28 @@ function addToText(e, double) {
 
 function parseToMarkDown(text) {
   let save = text;
-  const pSepRx = /\n/g
-  // const headingsRx = /^(#{1,6})\s(.+)$/gm;
-  const headingsRx = /^(\s*\-{1}\s*)?(#{1,6})\s(.+)$/gm
+  const pSepRx = /\n/g;
+  const headingsRx = /^(\s*\-{1}\s*)?(#{1,6})\s(.+)$/gm;
   const boldItalicsRx = /(\*+)([\w\d\s\\\*][^\n]+?)\1/g;
-  // const linesRx = /^-{3}\s*$/gm;
-  const linesRx = /^(\-|\*|\_){3}\s*$/gm
-  const codeRx = /(?:`{3}\w*\n?([\w\d\s\t\r\D]+)`{3}|`{1}(.+)`{1})/g
-  const linksRx = /\[(.+)\]\((.+)\)/;
-  // const globalListItemRx = /^(\s*[^\n])?\-\s{1}(.+)/gm
-  // const globalListItemRx = /^(\s*[^\n])?(\-|\d\.)\s{1}(.+)/gm
-  const globalListItemRx = /^(\s*[^\n])?(\-|(?:\d\.)|\*|\+)\s{1}(.+)/gm
-  // Create paragraphs
+  const linesRx = /^(\-|\*|\_){3}\s*$/gm;
+  const codeRx = /(?:`{3}\w*\n?([\w\d\s\t\r\D]+)`{3}|`{1}(.+)`{1})/g;
+  const linksRx = /[^\!]\[(.+)\]\((.+)\)/;
+  const globalListItemRx = /^(\s*[^\n])?(\-|(?:\d\.)|\*|\+)\s{1}(.+)/gm;
+  const imageRx = /!\[([\w\d\W]*?)\]\((.+)\)/g;
+  const blockQuote = /^\>\s*(.+)/gm
+
+  save = save.replace(blockQuote, (...g) => {
+    return `<blockquote>${g[1]}</blockquote>`
+  })
+
   function liJoiner(data) {
     let storage = (typeof data === "object" ? data : data.split(pSepRx))
-    // let liRx = /^(\s*[^\n])?\-\s{1}(.+)/m;
     let liRx = /^(\s*[^\n])?(\-|\d\.)\s{1}(.+)/m
     let reRun = false;
 
     storage.forEach((d, i, all) => {
       if (i > 0) {
+
         if (liRx.test(all[i - 1]) && !liRx.test(d)) {
           if (d.length) {
             all[i - 1] += ` ${d}`;
@@ -104,7 +106,6 @@ function parseToMarkDown(text) {
 
   function paragrapher(data) {
     let storage = (typeof data === "object" ? data : data.split(pSepRx));
-    console.log(storage)
     const paraRx = /^[\w].+$/m;
     let liRx = /^(\s*[^\n])?(\-|\d\.)\s{1}(.+)/m
     let reRun = false;
@@ -147,6 +148,8 @@ function parseToMarkDown(text) {
 
   save = paragrapher(save)
 
+
+
   // Create code blocks
   save = save.replace(codeRx, (...g) => {
     if (g[2]) {
@@ -159,14 +162,17 @@ function parseToMarkDown(text) {
 
   })
 
+
+
   // Replace all the headings
   save = save.replace(headingsRx, (...g) => {
-    console.log(g)
+
     return `${g[1] || ""}<h${g[2].length}>${g[3]}</h${g[2].length}>`
   });
 
+
   // Create lines
-  console.log("lines", save)
+
   save = save.replace(linesRx, () => "<hr>")
 
   // Create bold and italics
@@ -232,14 +238,21 @@ function parseToMarkDown(text) {
         }
 
         if (c + 1 !== a.index) {
+
           // New Big Ul
+
           if (all[b - 1]) {
+
           // If there is a previous one close that
             all[b - 1]["closeUl"] = `\n</${lType}>`
+          } else if (all.length === 1) {
+            all[0]["closeUl"] = `\n</${lType}>`
           }
 
           a["newUl"] = `<${lType}>\n`
         } else if (b == all.length - 1) {
+
+
           // End Item Reached
           let end = "";
 
@@ -251,26 +264,30 @@ function parseToMarkDown(text) {
         }
 
         c = a[0].length + a.index;
+
+
+
         return a
       })
     }
     tracker()
 
+
     save = save.replace(globalListItemRx, (...g) => {
+
       let el = `${temp[i].newUl}${temp[i].newSubUl}<li>${g[3]}</li>${temp[i].endSubUl}${temp[i].closeUl}`
 
       i++
 
       return el
     })
+
   }
 
   createLists()
 
-
+  save = save.replace(imageRx, (...g) => `<img src="${g[2]}" alt="${g[1]}">`)
 
   textEditorPreview.innerHTML = save;
 
-  console.log(textEditorPreview.innerHTML)
-  // console.log(save)
 }
