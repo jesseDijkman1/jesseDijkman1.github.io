@@ -24,9 +24,6 @@ function addToText(e, double) {
       selEnd = textEditorRaw.selectionEnd,
       preserved = "";
 
-
-
-
   const v = e.currentTarget.getAttribute("data-editValue");
   const singleLine = e.currentTarget.getAttribute("data-singleLine") == undefined ? false : true;
   const vLength = v.length;
@@ -53,6 +50,13 @@ function addToText(e, double) {
     }
   } else {
     document.execCommand("insertText", false, `${v} ${preserved}`) // Space is required
+
+    const carretPostionerRx = /TEXT/g;
+    let start = v.search(carretPostionerRx)
+    let end = 4;
+
+    textEditorRaw.selectionStart = start;
+    textEditorRaw.selectionEnd = start + end;
   }
 }
 
@@ -62,12 +66,13 @@ function parseToMarkDown(text) {
   // const headingsRx = /^(#{1,6})\s(.+)$/gm;
   const headingsRx = /^(\s*\-{1}\s*)?(#{1,6})\s(.+)$/gm
   const boldItalicsRx = /(\*+)([\w\d\s\\\*][^\n]+?)\1/g;
-  const linesRx = /^-{3}$/gm;
+  // const linesRx = /^-{3}\s*$/gm;
+  const linesRx = /^(\-|\*|\_){3}\s*$/gm
   const codeRx = /(?:`{3}\w*\n?([\w\d\s\t\r\D]+)`{3}|`{1}(.+)`{1})/g
   const linksRx = /\[(.+)\]\((.+)\)/;
   // const globalListItemRx = /^(\s*[^\n])?\-\s{1}(.+)/gm
-  const globalListItemRx = /^(\s*[^\n])?(\-|\d\.)\s{1}(.+)/gm
-
+  // const globalListItemRx = /^(\s*[^\n])?(\-|\d\.)\s{1}(.+)/gm
+  const globalListItemRx = /^(\s*[^\n])?(\-|(?:\d\.)|\*|\+)\s{1}(.+)/gm
   // Create paragraphs
   function liJoiner(data) {
     let storage = (typeof data === "object" ? data : data.split(pSepRx))
@@ -161,6 +166,7 @@ function parseToMarkDown(text) {
   });
 
   // Create lines
+  console.log("lines", save)
   save = save.replace(linesRx, () => "<hr>")
 
   // Create bold and italics
@@ -188,7 +194,7 @@ function parseToMarkDown(text) {
 
     function listType(str) {
       const ol = /\d/;
-      const ul = /\-/;
+      const ul = /\-|\*|\+/;
 
       if (ol.test(str)) {
         return "ol"
