@@ -25,6 +25,8 @@ function addToText(e, double) {
       preserved = "";
 
 
+
+
   const v = e.currentTarget.getAttribute("data-editValue");
   const singleLine = e.currentTarget.getAttribute("data-singleLine") == undefined ? false : true;
   const vLength = v.length;
@@ -35,6 +37,7 @@ function addToText(e, double) {
   }
 
   if (double) {
+
     document.execCommand("insertText", false, `${v}${preserved}${v}`)
 
     selStart = textEditorRaw.selectionStart;
@@ -68,7 +71,8 @@ function parseToMarkDown(text) {
   // Create paragraphs
   function liJoiner(data) {
     let storage = (typeof data === "object" ? data : data.split(pSepRx))
-    let liRx = /^(\s*[^\n])?\-\s{1}(.+)/m;
+    // let liRx = /^(\s*[^\n])?\-\s{1}(.+)/m;
+    let liRx = /^(\s*[^\n])?(\-|\d\.)\s{1}(.+)/m
     let reRun = false;
 
     storage.forEach((d, i, all) => {
@@ -95,17 +99,21 @@ function parseToMarkDown(text) {
 
   function paragrapher(data) {
     let storage = (typeof data === "object" ? data : data.split(pSepRx));
+    console.log(storage)
     const paraRx = /^[\w].+$/m;
+    let liRx = /^(\s*[^\n])?(\-|\d\.)\s{1}(.+)/m
     let reRun = false;
 
     storage.forEach((d, i, all) => {
       if (i > 0) {
         if ((paraRx.test(all[i - 1]) && paraRx.test(d)) || (boldItalicsRx.test(all[i - 1]) && paraRx.test(d))) {
           if (d.length) {
-            all[i - 1] += ` ${d}`;
-            all.splice(i, 1);
+            if (!liRx.exec(d)) {
+              all[i - 1] += ` ${d}`;
+              all.splice(i, 1);
 
-            reRun = true;
+              reRun = true;
+            }
           }
         }
       }
@@ -116,7 +124,7 @@ function parseToMarkDown(text) {
     } else {
 
       storage = storage.map((s, i, all) => {
-        if (i > 0 && i < all.length - 1) {
+        if (i > 0 && i < all.length) {
           if ((/^(\*|\w).+/m).test(s)) {
             if (!all[i - 1].length || headingsRx.test(all[i - 1])) {
               if (!(/^(\*+).+\1$/m).test(s)) {
@@ -181,10 +189,11 @@ function parseToMarkDown(text) {
     function listType(str) {
       const ol = /\d/;
       const ul = /\-/;
-      console.log(str, ul.test(str))
+
       if (ol.test(str)) {
         return "ol"
       }
+
       if (ul.test(str)) {
         return "ul"
       }

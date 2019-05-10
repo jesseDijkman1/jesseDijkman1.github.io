@@ -8,41 +8,44 @@
   <title>Text Editor</title>
 </head>
 <body>
-  <section class="text-editor">
-    <form class="editor-options">
-      <section class="inserting">
-        <button type="button" class="insert-newEl" data-singleLine data-editValue="---">Line</button>
-      </section>
-      <section class="headings">
-        <button type="button" class="insert-newEl" data-singleLine data-editValue="#">H1</button>
-        <button type="button" class="insert-newEl" data-singleLine data-editValue="##">H2</button>
-        <button type="button" class="insert-newEl" data-singleLine data-editValue="###">H3</button>
-        <button type="button" class="insert-newEl" data-singleLine data-editValue="####">H4</button>
-        <button type="button" class="insert-newEl" data-singleLine data-editValue="#####">H5</button>
-        <button type="button" class="insert-newEl" data-singleLine data-editValue="######">H6</button>
-      </section>
-      <section class="char-styling">
-        <button type="button" class="insert-newStyle" data-editValue="**">Bold</button>
-        <button type="button" class="insert-newStyle" data-editValue="*">Italics</button>
-        <button type="button" class="insert-newStyle" data-editValue="__">Underline</button>
-      </section>
-    </form>
 
+  <section class="page-width text-editor">
     <input id="preview-tab" class="visuallyhidden" type="radio" name="editor-tab" value="preview">
     <input id="editor-tab" class="visuallyhidden" type="radio" name="editor-tab" value="editor" checked>
 
-    <header class="tabs-container">
-      <label for="preview-tab">Preview</label>
-      <label for="editor-tab">Editor</label>
-    </header>
+    <div class="page-container">
+      <header class="tabs-container">
+        <label for="preview-tab">Preview</label>
+        <label for="editor-tab">Editor</label>
+      </header>
+      <form class="editor-options">
+        <section class="options inserting">
+          <button type="button" class="insert-newEl" data-singleLine data-editValue="---">Line</button>
+        </section>
+
+        <section class="options headings">
+          <button type="button" class="insert-newEl" data-singleLine data-editValue="#">H1</button>
+          <button type="button" class="insert-newEl" data-singleLine data-editValue="##">H2</button>
+          <button type="button" class="insert-newEl" data-singleLine data-editValue="###">H3</button>
+          <button type="button" class="insert-newEl" data-singleLine data-editValue="####">H4</button>
+          <button type="button" class="insert-newEl" data-singleLine data-editValue="#####">H5</button>
+          <button type="button" class="insert-newEl" data-singleLine data-editValue="######">H6</button>
+        </section>
+        <section class="options char-styling">
+          <button type="button" class="insert-newStyle" data-editValue="**">Bold</button>
+          <button type="button" class="insert-newStyle" data-editValue="*">Italics</button>
+          <button type="button" class="insert-newStyle" data-editValue="__">Underline</button>
+        </section>
+      </form>
+
+
+    </div>
 
     <section class="editor-section editor">
-      editor
       <textarea cols="30" rows="10"></textarea>
     </section>
 
     <section class="editor-section preview">
-      preview
     </section>
 
   </section>
