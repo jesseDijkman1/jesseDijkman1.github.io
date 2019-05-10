@@ -67,7 +67,7 @@ function parseToMarkDown(text) {
   const boldItalicsRx = /(\*+)([\w\d\s\\\*][^\n]+?)\1/g;
   const linesRx = /^(\-|\*|\_){3}\s*$/gm;
   const codeRx = /(?:`{3}\w*\n?([\w\d\s\t\r\D]+)`{3}|`{1}(.+)`{1})/g;
-  const linksRx = /[^\!]\[(.+)\]\((.+)\)/;
+  const linksRx = /[^\!]{0}\[(.+)\]\((.+)\)/g;
   const globalListItemRx = /^(\s*[^\n])?(\-|(?:\d\.)|\*|\+)\s{1}(.+)/gm;
   const imageRx = /!\[([\w\d\W]*?)\]\((.+)\)/g;
   const blockQuote = /^\>\s*(.+)/gm
@@ -167,7 +167,7 @@ function parseToMarkDown(text) {
   // Replace all the headings
   save = save.replace(headingsRx, (...g) => {
 
-    return `${g[1] || ""}<h${g[2].length}>${g[3]}</h${g[2].length}>`
+    return `${g[1] || ""}<h${g[2].length} id="${g[3].split(" ").join("-").toLowerCase()}" >${g[3]}</h${g[2].length}>`
   });
 
 
@@ -191,7 +191,7 @@ function parseToMarkDown(text) {
   })
 
   // Create links
-  save = save.replace(linksRx, (...g) => `<a href="${g[2]}">${g[1]}</a>`)
+
 
   function createLists() {
     let i = 0;
@@ -285,6 +285,11 @@ function parseToMarkDown(text) {
   }
 
   createLists()
+  console.log(save)
+  save = save.replace(linksRx, (...g) => {
+    console.log(g)
+    return `<a href="${g[2]}">${g[1]}</a>`
+  })
 
   save = save.replace(imageRx, (...g) => `<img src="${g[2]}" alt="${g[1]}">`)
 

@@ -1,36 +1,28 @@
 # Project 3 @cmda-minor-web · 2018-2019
-For this project I'm going to build a markdown texteditor. That allows users to learn the basics of markdown. With buttons that generate markdown code, the user will learn the different commands.
+For this project I'm going to build a markdown text editor. This text editor will have buttons just like a rich text editor. These buttons will create the raw markdown code like "#" or "****", so the user learns the commands while using the text editor.
 
-## How it will work
-- When pressing enter a new p element must be created
-  - Create empty line `when` there's no text
-- You can edit by sel ecting and then clicking a butt
+## Table of Contents
+- [Concept](#concept)
+- [How it Works](#how-it-works)
+- [To-Do](#to-do)
+- [License](#License)
 
-**First list**
-- Line 1
-- Line 2
-  - Line 2.1
-  - ## oaiwefj
 
-**Second List**
-- Line 3
-  - Line 3.1
-    - Line 3.1.1
-    - Line 3.1.2
-  - Line 3.2
+## Concept
+Markdown text editor combined with a rich text editor.
 
-```js
+## How it works
+When the user types in the textarea nothing happens, when the user clicks on preview javascript is going to parse the value of the textarea into markdown. The parsing could've been achieved with a package, but since it was prefered to use less packages I tried creating my own parser. Which works for the most part. I created the parser myself because that way I learn the most.
 
-const foo = "1";
+## To-Do
+- Make the code object-oriented
+- Parse tables
+- Virtual DOM (for lighter DOM manipulation)
+- Clean the code
+- Fix the bugs
 
-function bar(p) {
-  return p + p;
-}
+Pasting the raw markdown of this README into the editor, works fine. Displayed in the image below.
+![](./images/editor-sh.png)
 
-bar(foo)
-```
-
-![fawe](https://i.imgur.com/L3ypYJT.jpg)
-
->  blockquote 1awefawef
->blockquote 2
+## License
+MIT © [Jesse Dijkman](https://github.com/jesseDijkman1)
