@@ -14,9 +14,9 @@ function _createMessage(text) {
 
 function responseMessage(greet) {
   if (greet)
-    return `<li class="chat-messages__message message"><p class="message__text">Heeeeeyyyy! :)</p></li>`
+    return `<li class="chat-messages__message message message--left"><p class="message__text">Heeeeeyyyy! :)</p></li>`
 
-  return `<li class="chat-messages__message message"><p class="message__text">What???</p></li>`
+  return `<li class="chat-messages__message message message--left"><p class="message__text">What???</p></li>`
 }
 
 function checkIfGreet(message) {
