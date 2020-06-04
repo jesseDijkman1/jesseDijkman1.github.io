@@ -23,7 +23,7 @@ function _createMessage(text, response = false) {
 
 function responseMessage(greet) {
   if (greet) return _createMessage("Heeeeeyyyy!", true)
-  return _createMessage("Uhm ... Hi?!", true)
+  return _createMessage("Uhm ... ?!", true)
 }
 
 function checkIfGreet(message) {
@@ -36,6 +36,8 @@ function checkIfGreet(message) {
 function _postMessage(message) {
   if (!messages) emptyChat.remove()
 
+  messages++
+
   chat.appendChild(message)
 }
 
@@ -43,12 +45,15 @@ submit.onclick = () => {
   if (input.value.length == 0) return
   const msg = _createMessage(input.value)
   _postMessage(msg)
+
   if (checkIfGreet(input.value)) {
     const response = responseMessage(true)
     _postMessage(response)
   } else {
-    const response = responseMessage(false)
-    _postMessage(response)
+    if (messages.length <= 1) {
+      const response = responseMessage(false)
+      _postMessage(response)
+    }
   }
 
   input.value = ""
