@@ -5,18 +5,23 @@ const emptyChat = document.getElementById("empty-chat")
 let messages = 0
 
 function _createMessage(text) {
-  return `
-    <li class="chat-messages__message message message--right">
-      <p class="message__text">${text}</p>
-    </li>
-  `
+  const li = document.createElement("LI")
+  const p = document.createElement("P")
+  const content = document.createTextNode(text)
+
+  li.className = "chat-messages__message message message--right"
+  p.className = "message__text"
+
+  p.appendChild(content)
+
+  li.appendChild(p)
+
+  return li
 }
 
 function responseMessage(greet) {
-  if (greet)
-    return `<li class="chat-messages__message message message--left"><p class="message__text">Heeeeeyyyy! :)</p></li>`
-
-  return `<li class="chat-messages__message message message--left"><p class="message__text">What???</p></li>`
+  if (greet) return _createMessage("Heeeeeyyyy!")
+  return _createMessage("Uhm ... Hi?!")
 }
 
 function checkIfGreet(message) {
@@ -28,7 +33,8 @@ function checkIfGreet(message) {
 
 function _postMessage(message) {
   if (!messages) emptyChat.remove()
-  chat.innerHTML += message
+
+  chat.appendChild(message)
 }
 
 submit.onclick = () => {
