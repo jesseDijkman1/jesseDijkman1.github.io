@@ -14,8 +14,8 @@ function _postMessage(message) {
   chat.innerHTML += message
 }
 
-chatInput.onclick = () => {
-  if (input.value.lenght == 0) return
+submit.onclick = () => {
+  if (input.value.length == 0) return
   const msg = _createMessage(input.value)
   _postMessage(msg)
 }
