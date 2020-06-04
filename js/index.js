@@ -34,7 +34,7 @@ function _postMessage(message) {
 submit.onclick = () => {
   if (input.value.length == 0) return
   const msg = _createMessage(input.value)
-
+  _postMessage(msg)
   if (checkIfGreet(input.value)) {
     const response = responseMessage(true)
     _postMessage(response)
