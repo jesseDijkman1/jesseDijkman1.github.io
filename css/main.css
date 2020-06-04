@@ -390,6 +390,9 @@ em {
 
 .message {
   /* border-radius: 8px; */
+  opacity: 0;
+
+  animation: newMessage 0.3s ease forwards;
 }
 
 .message--left {
@@ -397,12 +400,25 @@ em {
   background: var(--red);
   color: white;
   border-radius: 0px 8px 8px 8px;
+  transform-origin: left;
 }
 .message--right {
   align-self: flex-end;
   background: var(--blue);
   color: white;
   border-radius: 8px 0px 8px 8px;
+  transform-origin: right;
+}
+
+@keyframes newMessage {
+  0% {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
 }
 
 .message--left + .message--left,
