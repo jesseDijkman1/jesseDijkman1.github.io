@@ -577,9 +577,11 @@ em {
   color: var(--red);
   position: fixed;
   display: flex;
-  height: 100vh;
+  height: 50vh;
   width: 100vw;
   justify-content: center;
   align-items: center;
   text-align: center;
+  left: 0;
+  top: 25vh;
 }
