@@ -22,8 +22,8 @@ function _createMessage(text, response = false) {
 }
 
 function responseMessage(greet) {
-  if (greet) return _createMessage("Heeeeeyyyy!")
-  return _createMessage("Uhm ... Hi?!")
+  if (greet) return _createMessage("Heeeeeyyyy!", true)
+  return _createMessage("Uhm ... Hi?!", true)
 }
 
 function checkIfGreet(message) {
