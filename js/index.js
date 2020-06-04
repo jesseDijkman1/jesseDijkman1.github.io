@@ -1,6 +1,7 @@
 const submit = document.getElementById("send-message")
 const input = document.getElementById("message")
 const chat = document.getElementById("chat")
+const emptyChat = document.getElementById("empty-chat")
 
 function _createMessage(text) {
   return `
@@ -10,14 +11,36 @@ function _createMessage(text) {
   `
 }
 
+function responseMessage(greet) {
+  if (greet)
+    return `<li class="chat-messages__message message"><p class="message__text">Heeeeeyyyy! :)</p></li>`
+
+  return `<li class="chat-messages__message message"><p class="message__text">What???</p></li>`
+}
+
+function checkIfGreet(message) {
+  const greetings = ["hey", "hi", "hello"]
+  if (greetings.includes(message.toLowerCase())) return true
+
+  return false
+}
+
 function _postMessage(message) {
+  if (emptyChat) emptyChat.remove()
   chat.innerHTML += message
 }
 
 submit.onclick = () => {
   if (input.value.length == 0) return
   const msg = _createMessage(input.value)
-  _postMessage(msg)
+
+  if (checkIfGreet(input.value)) {
+    const response = responseMessage(true)
+    _postMessage(response)
+  } else {
+    const response = responseMessage(false)
+    _postMessage(response)
+  }
 
   input.value = ""
 }
