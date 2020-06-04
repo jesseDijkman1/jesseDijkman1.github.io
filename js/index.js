@@ -18,4 +18,6 @@ submit.onclick = () => {
   if (input.value.length == 0) return
   const msg = _createMessage(input.value)
   _postMessage(msg)
+
+  input.value = ""
 }
