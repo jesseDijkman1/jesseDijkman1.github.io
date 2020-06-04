@@ -50,7 +50,7 @@ submit.onclick = () => {
     const response = responseMessage(true)
     _postMessage(response)
   } else {
-    if (messages.length <= 1) {
+    if (messages <= 1) {
       const response = responseMessage(false)
       _postMessage(response)
     }
