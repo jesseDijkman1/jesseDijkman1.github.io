@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dating App Feature</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/src/css/main.css">
+  </head>
+  
+  <body>
+    <header class="top-header">
+      <a class="top-header__back-btn" href="/matches"><i class="fa fa-toggle-left"></i></a>
+      
+        <h1 class="top-header__heading--center">Anna</h1>
+      
+    </header>
+    
+    <main class="chat-messages">
+  <div class="chat-messages__container">
+    <ul class="chat-messages__list">
+      
+      <li class="chat-messages__message message message--right">
+          
+            <div class="message__image-container">
+              <img class="message__image" src="https://media2.giphy.com/media/htvoIc045GMWWDd4e3/giphy.gif">
+            </div>
+          
+        </li>
+      
+      <li class="chat-messages__message message message--right">
+          
+            <div class="message__image-container">
+              <img class="message__image" src="https://media0.giphy.com/media/l0Iy5jWZFjb60dBXa/giphy.gif">
+            </div>
+          
+        </li>
+      
+      <li class="chat-messages__message message message--right">
+          
+
+          <p class="message__text">Hey</p>
+          
+        </li>
+      
+      <li class="chat-messages__message message message--right">
+          
+
+          <p class="message__text">What&#39;s up</p>
+          
+        </li>
+      
+      <li class="chat-messages__message message message--left">
+          
+
+          <p class="message__text">Nothing much</p>
+          
+        </li>
+      
+      <li class="chat-messages__message message message--right">
+          
+            <div class="message__image-container">
+              <img class="message__image" src="https://media2.giphy.com/media/Ov5NiLVXT8JEc/giphy.gif">
+            </div>
+          
+        </li>
+      
+      <li class="chat-messages__message message message--right">
+          
+            <div class="message__image-container">
+              <img class="message__image" src="https://media0.giphy.com/media/3owyp3F4vIlaT4vQME/giphy.gif">
+            </div>
+          
+        </li>
+      
+      <li class="chat-messages__message message message--right">
+          
+            <div class="message__image-container">
+              <img class="message__image" src="https://media3.giphy.com/media/KpAPQVW9lWnWU/giphy.gif">
+            </div>
+          
+        </li>
+      
+    </ul>
+  </div>
+</main>
+
+<footer class="chat-footer">
+  <div class="chat-footer__container">
+    <div class="chat-footer__wrapper">
+      <a class="chat-footer__giphy-overview-link" href="/chat/5ed6faf12973f48e6a33437e/giphy">GIPHY</a>
+
+      <form class="chat-footer__form" action="/chat/message" method="POST">
+        <input type="hidden" name="matchId" value="5ed6faf12973f48e6a33437e">
+        <input type="hidden" name="userId" value="5ed6b3003e1fcb81a8af5787">
+        <input class="chat-footer__form-input" type="text" name="message">
+        <button class="chat-footer__form-submit" type="submit"><i class="fa fa-send"></i></button>
+      </form>
+    </div>
+  </div>
+</footer>
+    
+    <script src="/src/index.js"></script>
+  </body>
+</html>

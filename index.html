@@ -1,68 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="css/styles.css">
-  <title>Text Editor</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dating App Feature</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" href="./css/main.css" />
+  </head>
 
-  <section class="page-width text-editor">
-    <input id="preview-tab" class="visuallyhidden" type="radio" name="editor-tab" value="preview">
-    <input id="editor-tab" class="visuallyhidden" type="radio" name="editor-tab" value="editor" checked>
-
+  <body>
     <div class="page-container">
-      <header class="tabs-container">
-        <label for="preview-tab">Preview</label>
-        <label for="editor-tab">Editor</label>
-      </header>
+      <main class="user-cards">
+        <ul class="user-cards__list">
+          <li class="user-cards__list-item">
+            <article class="user-card">
+              <div class="user-card__image-container">
+                <img
+                  class="user-card__image"
+                  src="https://www.birthdaymessagesstatus.com/wp-content/uploads/2018/08/Stylish-Attitude-Girl-Images-for-FB-Profile-Pic-300x291.jpg"
+                />
 
-      <form class="editor-options">
-        <h3 class="flex-full">Options</h3>
-        <!-- <section class="options inserting"> -->
-          <button type="button" class="insert-newEl" data-singleLine data-editValue="---">Line</button>
-          <button type="button" class="insert-newEl" data-editValue="[TEXT](http://example.com/)">Link</button>
-          <button type="button" class="insert-newEl" data-editValue="![TEXT](image link)">Img</button>
-          <button type="button" class="insert-newEl" data-singleLine data-editValue="| HEADING | HEADING |
-| ------- | ------- |
-| CONTENT | CONTENT |">Table</button>
-          <button type="button" class="insert-newEl" data-singleLine data-editValue="> TEXT">Blockquote</button>
-          <button type="button" class="insert-newEl" data-editValue="`TEXT`">Code</button>
-          <button type="button" class="insert-newEl" data-singleLine data-editValue="```
-TEXT
-```">Code block</button>
+                <footer class="user-card__footer">
+                  <h3 class="user-card__name">Sam</h3>
+                  <h4 class="user-card__age">24</h4>
+                </footer>
+              </div>
 
-        <!-- </section> -->
+              <form class="user-card__form" action="/user/like" method="POST">
+                <input
+                  type="hidden"
+                  name="userId"
+                  value="5ed6b3003e1fcb81a8af5787"
+                />
+                <input
+                  type="hidden"
+                  name="otherUserId"
+                  value="5ed6f99b2973f48e6a33437d"
+                />
+                <button
+                  type="submit"
+                  class="user-card__button user-card__button--like"
+                >
+                  <i class="fa fa-heart"></i>
+                </button>
+              </form>
+            </article>
+          </li>
 
-        <!-- <section class="options headings"> -->
-          <button type="button" class="insert-newEl" data-singleLine data-editValue="#">H1</button>
-          <button type="button" class="insert-newEl" data-singleLine data-editValue="##">H2</button>
-          <button type="button" class="insert-newEl" data-singleLine data-editValue="###">H3</button>
-          <button type="button" class="insert-newEl" data-singleLine data-editValue="####">H4</button>
-          <button type="button" class="insert-newEl" data-singleLine data-editValue="#####">H5</button>
-          <button type="button" class="insert-newEl" data-singleLine data-editValue="######">H6</button>
-        <!-- </section> -->
-        <!-- <section class="options char-styling"> -->
-          <button type="button" class="insert-newStyle" data-editValue="**">Bold</button>
-          <button type="button" class="insert-newStyle" data-editValue="*">Italics</button>
-          <button type="button" class="insert-newStyle" data-editValue="__">Underline</button>
-        <!-- </section> -->
-      </form>
+          <li class="user-cards__list-item">
+            <article class="user-card">
+              <div class="user-card__image-container">
+                <img
+                  class="user-card__image"
+                  src="https://www.birthdaymessagesstatus.com/wp-content/uploads/2018/08/Stylish-Attitude-Girl-Images-for-FB-Profile-Pic-300x291.jpg"
+                />
 
+                <footer class="user-card__footer">
+                  <h3 class="user-card__name">Jane</h3>
+                  <h4 class="user-card__age">32</h4>
+                </footer>
+              </div>
 
+              <form class="user-card__form" action="/user/like" method="POST">
+                <input
+                  type="hidden"
+                  name="userId"
+                  value="5ed6b3003e1fcb81a8af5787"
+                />
+                <input
+                  type="hidden"
+                  name="otherUserId"
+                  value="5ed7d7d5253b3100171c91f1"
+                />
+                <button
+                  type="submit"
+                  class="user-card__button user-card__button--like"
+                >
+                  <i class="fa fa-heart"></i>
+                </button>
+              </form>
+            </article>
+          </li>
+        </ul>
+      </main>
     </div>
 
-    <section class="editor-section editor">
-      <textarea cols="30" rows="10"></textarea>
-    </section>
+    <footer class="footer-navigation">
+      <nav class="footer-navigation__container">
+        <ul class="footer-navigation__list">
+          <li class="footer-navigation__list-item">
+            <form
+              class="footer-navigation__list-item"
+              action="/logout"
+              method="POST"
+            >
+              <button class="footer-navigation__link" type="submit">
+                Logout
+              </button>
+            </form>
+          </li>
+          <li class="footer-navigation__list-item">
+            <a class="footer-navigation__link" href="./index.html">Home</a>
+          </li>
+          <li class="footer-navigation__list-item">
+            <a class="footer-navigation__link" href="./matches.html">Matches</a>
+          </li>
+        </ul>
+      </nav>
+    </footer>
 
-    <section class="editor-section preview">
-    </section>
-
-  </section>
-
-  <script src="js/index.js"></script>
-</body>
+    <script src="./js/index.js"></script>
+  </body>
 </html>
