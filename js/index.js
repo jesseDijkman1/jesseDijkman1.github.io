@@ -2,6 +2,7 @@ const submit = document.getElementById("send-message")
 const input = document.getElementById("message")
 const chat = document.getElementById("chat")
 const emptyChat = document.getElementById("empty-chat")
+let messages = 0
 
 function _createMessage(text) {
   return `
@@ -26,7 +27,7 @@ function checkIfGreet(message) {
 }
 
 function _postMessage(message) {
-  if (emptyChat) emptyChat.remove()
+  if (!messages) emptyChat.remove()
   chat.innerHTML += message
 }
 
