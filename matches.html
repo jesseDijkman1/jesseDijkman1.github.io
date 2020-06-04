@@ -4,73 +4,70 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dating App Feature</title>
-    <style>
 
-      .error input {
-        border: solid 1px red;
-      }
-
-
-      .message--mine {
-        background-color: yellow 
-      }
-
-    </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/src/css/main.css">
-
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" href="./css/main.css" />
   </head>
-  
+
   <body>
-    
     <div class="page-container">
       <main>
-  
-    <ul class="user-cards__list">
-      
-        <li class="user-cards__list-item">
-          <article class="user-card">
-            <div class="user-card__image-container">
-              
-                <img class="user-card__image" src="https://www.birthdaymessagesstatus.com/wp-content/uploads/2018/08/Stylish-Attitude-Girl-Images-for-FB-Profile-Pic-300x291.jpg">
-              
+        <ul class="user-cards__list">
+          <li class="user-cards__list-item">
+            <article class="user-card">
+              <div class="user-card__image-container">
+                <img
+                  class="user-card__image"
+                  src="https://www.birthdaymessagesstatus.com/wp-content/uploads/2018/08/Stylish-Attitude-Girl-Images-for-FB-Profile-Pic-300x291.jpg"
+                />
 
-              <footer class="user-card__footer">
-                <h3 class="user-card__name">Anna</h3>
-                <h4 class="user-card__age">27</h4>
-              </footer>
-            </div>
+                <footer class="user-card__footer">
+                  <h3 class="user-card__name">Anna</h3>
+                  <h4 class="user-card__age">27</h4>
+                </footer>
+              </div>
 
-            <div class="user-card__form" action="/user/like" method="POST">
-              <a type="submit" class="user-card__button user-card__button--chat" href="/chat/5ed6faf12973f48e6a33437e"><i class="	fa fa-comment"></i></a>
-            </div>
-            
-          </article>
-        </li>
-      
-    </ul>
-  
-</main>
+              <div class="user-card__form" action="/user/like" method="POST">
+                <a
+                  type="submit"
+                  class="user-card__button user-card__button--chat"
+                  href="./chat.html"
+                  ><i class="fa fa-comment"></i
+                ></a>
+              </div>
+            </article>
+          </li>
+        </ul>
+      </main>
     </div>
-    
+
     <footer class="footer-navigation">
       <nav class="footer-navigation__container">
         <ul class="footer-navigation__list">
           <li class="footer-navigation__list-item">
-            <form class="footer-navigation__list-item" action="/logout" method="POST">
-              <button class="footer-navigation__link" type="submit">Logout</button>
+            <form
+              class="footer-navigation__list-item"
+              action="/logout"
+              method="POST"
+            >
+              <button class="footer-navigation__link" type="submit">
+                Logout
+              </button>
             </form>
           </li>
           <li class="footer-navigation__list-item">
-            <a class="footer-navigation__link" href="/">Home</a>
+            <a class="footer-navigation__link" href="./index.html">Home</a>
           </li>
           <li class="footer-navigation__list-item">
-            <a class="footer-navigation__link" href="/matches">Matches</a>
+            <a class="footer-navigation__link" href="./matches.html">Matches</a>
           </li>
         </ul>
       </nav>
     </footer>
 
-    <script src="/src/index.js"></script>
+    <script src="./js/index.js"></script>
   </body>
 </html>
