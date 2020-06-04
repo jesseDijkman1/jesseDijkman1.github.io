@@ -4,12 +4,14 @@ const chat = document.getElementById("chat")
 const emptyChat = document.getElementById("empty-chat")
 let messages = 0
 
-function _createMessage(text) {
+function _createMessage(text, response = false) {
   const li = document.createElement("LI")
   const p = document.createElement("P")
   const content = document.createTextNode(text)
 
-  li.className = "chat-messages__message message message--right"
+  li.className = `chat-messages__message message message--${
+    response ? "left" : "right"
+  }`
   p.className = "message__text"
 
   p.appendChild(content)
