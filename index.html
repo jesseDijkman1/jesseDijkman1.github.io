@@ -1,87 +1,290 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dating App Feature</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
-    <link rel="stylesheet" href="./css/main.css" />
-  </head>
 
-  <body>
-    <div class="page-container">
-      <main class="user-cards">
-        <ul class="user-cards__list">
-          <li class="user-cards__list-item">
-            <article class="user-card">
-              <div class="user-card__image-container">
-                <img
-                  class="user-card__image"
-                  src="https://www.birthdaymessagesstatus.com/wp-content/uploads/2018/08/Stylish-Attitude-Girl-Images-for-FB-Profile-Pic-300x291.jpg"
-                />
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>
+    Spaceship - Three.js
+  </title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-                <footer class="user-card__footer">
-                  <h3 class="user-card__name">Sam</h3>
-                  <h4 class="user-card__age">24</h4>
-                </footer>
-              </div>
+    [hidden] {
+      display: none !important;
+    }
 
-              <div class="user-card__form">
-                <button class="user-card__button user-card__button--like">
-                  <i class="fa fa-heart"></i>
-                </button>
-              </div>
-            </article>
-          </li>
+    body {
+      overflow: hidden;
+      margin: 0px;
+      font-family: system-ui;
+    }
 
-          <li class="user-cards__list-item">
-            <article class="user-card">
-              <div class="user-card__image-container">
-                <img
-                  class="user-card__image"
-                  src="https://ixicreations.weebly.com/uploads/2/6/5/4/26540271/___34431.png"
-                />
+    .container {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: black;
+    }
 
-                <footer class="user-card__footer">
-                  <h3 class="user-card__name">Jane</h3>
-                  <h4 class="user-card__age">32</h4>
-                </footer>
-              </div>
+    .canvas,
+    .ui {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
 
-              <div class="user-card__form">
-                <button class="user-card__button user-card__button--like">
-                  <i class="fa fa-heart"></i>
-                </button>
-              </div>
-            </article>
-          </li>
-        </ul>
-      </main>
+    .ui {
+      --padding: 1rem;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .ui__header {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 1rem;
+      position: absolute;
+      top: var(--padding);
+      right: var(--padding);
+      left: var(--padding);
+
+    }
+
+
+
+    .ui-component {
+      background: rgba(0, 0, 0, .4);
+      color: white;
+      border-radius: 8px;
+      pointer-events: auto;
+      /* position: absolute; */
+      user-select: none;
+      z-index: 1;
+      transition: transform .3s ease;
+    }
+
+    .ui-component.ui-component--static {
+      pointer-events: none;
+    }
+
+    .ui-component--asteroid-count,
+    .ui-component--hits {
+      transform: translateX(calc(100% + var(--padding)));
+      font-weight: 300;
+      font-size: 4rem;
+      top: var(--padding);
+      right: var(--padding);
+      padding: .25em .5em;
+      align-items: flex-end;
+      display: flex;
+
+    }
+
+    .asteroid-count__tracker,
+    .hits__tracker {
+      display: flex;
+      align-items: center;
+      column-gap: .12em;
+    }
+
+    .asteroid-count__separator,
+    .asteroid-count__total,
+    .hits__separator,
+    .hits__total {
+      font-size: .4em;
+      line-height: 1;
+      vertical-align: top;
+
+    }
+
+    .asteroid-count__count,
+    .hits__count {
+      font-size: 1em;
+      font-weight: 900;
+    }
+
+    .asteroid-count__text,
+    .hits__text {
+      font-size: .20em;
+      font-weight: 300;
+      text-transform: uppercase;
+    }
+
+    .ui-component--health {
+      transform: translateY(calc(-100% - var(--padding)));
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      row-gap: 1em;
+      font-weight: 300;
+      text-transform: uppercase;
+      color: white;
+      padding: calc(2 * var(--padding)) calc(3 * var(--padding));
+      bottom: var(--padding);
+      left: calc(5 * var(--padding));
+      right: calc(5 * var(--padding));
+    }
+
+    .ui-component--health strong {
+      font-weight: 300;
+    }
+
+    .health__bar {
+      display: flex;
+      gap: .5rem;
+    }
+
+    .health__bar>span {
+      height: .6rem;
+      width: 100%;
+      background: goldenrod;
+      opacity: calc(var(--total-lifes) - var(--life))
+    }
+
+    .effect-overlay {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      opacity: 0;
+      z-index: 0;
+      background: rgb(2, 0, 36);
+      background: radial-gradient(circle, rgba(2, 0, 36, 0) 62%, rgba(255, 0, 0, 1) 100%);
+      /* transition: opacity .3s ease; */
+
+      /* animation-play-state: paused; */
+    }
+
+    .effect-overlay.active {
+      animation: damageTaken .3s cubic-bezier(1.000, 0.095, 0.240, 1.650) forwards;
+      /* animation-play-state: running; */
+    }
+
+    @keyframes damageTaken {
+      0% {
+        opacity: 0;
+      }
+
+      50% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+      }
+    }
+
+    .ui-component--options {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(20px);
+    }
+
+    .ui__loader {
+      width: 100px;
+      height: 100px;
+      border: solid 15px white;
+      border-left-color: transparent;
+      border-right-color: transparent;
+      border-bottom-color: transparent;
+      border-radius: 9999px;
+      animation: loader .5s linear infinite;
+    }
+
+    @keyframes loader {
+      0% {
+        transform: rotate(0)
+      }
+
+      100% {
+        transform: rotate(360deg)
+      }
+
+    }
+
+    .ui__button {
+      border: none;
+      appearance: none;
+      padding: 0.6em 1.1em;
+      border-radius: .25em;
+      font-size: 2rem;
+      text-transform: uppercase;
+      background: goldenrod;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      color: white;
+      box-shadow: 0px 6px 13px -7px rgba(0, 0, 0, 0.75);
+    }
+
+    .ui__button:hover {
+      cursor: pointer;
+      filter: brightness(1.1);
+    }
+
+    .ui__header.show .ui-component--health {
+      transform: translateY(0);
+    }
+
+    .ui__header.show .ui-component--asteroid-count,
+    .ui__header.show .ui-component--hits {
+      transform: translateX(0);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <canvas id="canvas"></canvas>
+    <div id="ui" class="ui">
+      <div class="ui__header">
+        <div class="ui-component ui-component--static ui-component--health">
+          <div class="health__bar">
+          </div>
+        </div>
+
+        <p class="ui-component ui-component--static ui-component--hits">
+          <span class="hits__tracker">
+            <span class="hits__count">0</span>
+            <span class="hits__separator">/</span>
+            <span class="hits__total">40</span>
+          </span>
+        </p>
+      </div>
+
+
+      <div class="effect-overlay"></div>
+
+      <div class="ui-component ui-component--options">
+        <div class="ui__loader"></div>
+
+        <button type="button" class="ui__button ui__button--start" hidden>Start</button>
+        <button type="button" class="ui__button ui__button--continue" hidden>Continue</button>
+        <button type="button" class="ui__button ui__button--restart" hidden>Restart</button>
+      </div>
     </div>
 
-    <footer class="footer-navigation">
-      <nav class="footer-navigation__container">
-        <ul class="footer-navigation__list">
-          <li class="footer-navigation__list-item">
-            <div class="footer-navigation__list-item">
-              <button class="footer-navigation__link" type="submit">
-                Logout
-              </button>
-            </div>
-          </li>
-          <li class="footer-navigation__list-item">
-            <a class="footer-navigation__link" href="./index.html">Home</a>
-          </li>
-          <li class="footer-navigation__list-item">
-            <a class="footer-navigation__link" href="./matches.html">Matches</a>
-          </li>
-        </ul>
-      </nav>
-    </footer>
 
-    <script src="./js/index.js"></script>
-  </body>
+  </div>
+  <script type="module" src="./assets/bundle.js"></script>
+</body>
+
 </html>
